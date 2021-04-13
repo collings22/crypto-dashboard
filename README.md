@@ -1,3 +1,11 @@
+# Project Template
+
+Inspired by Uncle Bob's clean architecture I decided on creating this project to a component based architecture. As I do not believe a domain based architecture lends itself to an efficent test friendly structure.
+
+Happy to recieve comments and feedback!
+
+DC
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
