@@ -18,18 +18,35 @@ const Filters = () => {
     const moreCryptoFilters = () => setFilterCount(filterCount + 5)
 
     return (
-        <Accordion defaultActiveKey="-1">
+        <Accordion defaultActiveKey="99">
             <Card>
                 <Card.Header>
                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
                         Cryptos
+      </Accordion.Toggle>|
+      <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Volume
+      </Accordion.Toggle>|
+      <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                        Time Period
       </Accordion.Toggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                     <Card.Body>
-
                         <Buttons data={data.slice(0, filterCount)} filtered={filters} handleToggle={toggleFilter} />
                         <Button style={{ margin: '4px' }} onClick={moreCryptoFilters} variant="outline-primary" key="more">. . .</Button>
+                    </Card.Body>
+                </Accordion.Collapse>
+
+                <Accordion.Collapse eventKey="1">
+                    <Card.Body>
+                   Placeholder
+                    </Card.Body>
+                </Accordion.Collapse>
+
+                <Accordion.Collapse eventKey="2">
+                    <Card.Body>
+                   Placeholder
                     </Card.Body>
                 </Accordion.Collapse>
             </Card>
