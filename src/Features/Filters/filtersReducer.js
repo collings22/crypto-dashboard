@@ -5,5 +5,13 @@ export const selectAllCryptos = (state) => {
         return undefined
     }).filter(obj => obj !== undefined)
 
-    return data.sort((a, b) => a.id > b.id)
+    data = data.filter(o => o.name !== undefined)
+
+    let selectedCryptos = state.filters.cryptos
+
+    let selectedInArrayFirst = data.filter(a => selectedCryptos.includes(a.asset_id))
+
+    let mergedArrayWithSelectedAtStartOfArray = [...selectedInArrayFirst, ...data]
+
+    return mergedArrayWithSelectedAtStartOfArray.filter((v,i,a)=> a.findIndex(t=>(t.asset_id === v.asset_id))===i)
 }
