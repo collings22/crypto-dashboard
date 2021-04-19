@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const fetchCoinData = createAsyncThunk('api/fetchCoinData', async () => {
-  return await axios(`http://rest-sandbox.coinapi.io/v1/assets?apikey=0471F36D-9235-4055-B7B8-A6E25A4D54F4`)
+  return await axios(`http://rest-sandbox.coinapi.io/v1/assets?apikey=${process.env.REACT_APP_API_KEY}`)
     .then(res => {
         console.log(res.data)
         console.log(Object.keys(res.data).map(i => res.data[i]))
