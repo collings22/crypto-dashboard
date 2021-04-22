@@ -5,7 +5,7 @@ const NavBar = () => {
 
     return (
         <Navbar collapseOnSelect expand='lg' className='mb-3' bg='dark' variant='dark'>
-            <Navbar.Brand href="#home">RocketDan</Navbar.Brand>
+            <Navbar.Brand href={(document.location.pathname.includes('Home') ? '' : `/Home`)}>RocketDan</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse>
                 <Nav className='mr-auto'>
