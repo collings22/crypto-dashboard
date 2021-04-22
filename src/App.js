@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import Spinner from 'react-bootstrap/Spinner'
+import Alert from 'react-bootstrap/Alert'
 import NavBar from './Components/NavBar'
 import About from './Pages/About'
 import Home from './Pages/Home'
@@ -40,7 +41,24 @@ function App() {
       <Spinner style={{ margin: '50%' }} animation="grow" variant="info" />
     )
   } else if (loadingStatus === 'failed') {
-    return (<>{error}</>)
+    console.log(error)
+    return (
+      <>
+        <NavBar />
+        <Alert key='fetchFailed' variant='danger'>
+    API Call Failed. The app will use mock data. See console log for error details.
+  </Alert>
+        <Switch>
+          <Route exact path={'/About'}>
+            <About />
+          </Route>
+          <Route exact path={'/Home'}>
+            <Home />
+          </Route>
+          <Redirect to='/Home' />
+        </Switch>
+      </>
+    )
   }
   return <></>
 
