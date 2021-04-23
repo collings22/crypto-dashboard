@@ -5,51 +5,51 @@ export const dataFetchSlice = createSlice({
   name: 'api',
   initialState: {
     data: [{
-      asset_id: "BTC",
+      id: "BTC",
       name: "Bitcoin"
     },
     {
-      asset_id: "ADA",
+      id: "ADA",
       name: "Cardano"
     },
     {
-      asset_id: "ETH",
+      id: "ETH",
       name: "Ethereum"
     },
     {
-      asset_id: "DOT",
+      id: "DOT",
       name: "Polkadot"
     },
     {
-      asset_id: "eGLD",
+      id: "eGLD",
       name: "Elrond"
     },
     {
-      asset_id: "LINK",
+      id: "LINK",
       name: "Chainlink"
     },
     {
-      asset_id: "DOGE",
+      id: "DOGE",
       name: "Dogecoin"
     },
     {
-      asset_id: "NU",
+      id: "NU",
       name: "NuCypher"
     },
     {
-      asset_id: "LTC",
+      id: "LTC",
       name: "Litecoin"
     },
     {
-      asset_id: "ALGO",
+      id: "ALGO",
       name: "Algorand"
     },
     {
-      asset_id: "VET",
+      id: "VET",
       name: "VeChain"
     },
     {
-      asset_id: "SOL",
+      id: "SOL",
       name: "Solana"
     }
   ], status: 'idle', error: null,
