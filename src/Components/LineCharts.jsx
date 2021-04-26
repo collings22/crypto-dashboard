@@ -12,7 +12,7 @@ export const SimpleLineChart = (props) => {
     useEffect(() => {
         d3.select(ref.current)
             .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', '-20 -15 410 130')
+            .attr('viewBox', '-25 -15 410 130')
             .append('g')
             .attr('transform',
                 'translate(' + margin.left + ',' + margin.top + ')')
