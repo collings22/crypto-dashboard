@@ -25,11 +25,11 @@ export const SimpleBarChart = (props) => {
 
 
         let y = d3.scaleLinear()
-            .domain([0, d3.max(data, function (d) { return +d.y })])
+            .domain([0, Math.max(...data.map(o => o.y))*1.1])
             .range([height, 0])
 
         let x = d3.scaleBand()
-            .domain(data.map(o => o.label))
+            .domain(data.map(o => new Date(o.label)))
             .range([0, width])
             .padding([0.02])
 
@@ -71,14 +71,14 @@ export const SimpleBarChart = (props) => {
 
         selection
             .transition().duration(300)
-            .attr('height', function (d) { return y(d.y) })
-            .attr('y', function (d) { return height - y(d.y) })
+            .attr('height', function (d) { return height - y(d.y) })
+            .attr('y', function (d) { return  y(d.y) })
 
 
         selection
             .enter().append('rect')
             .style('fill', '#17a2b8')
-            .attr('x', function (d) { return x(d.label) })
+            .attr('x', function (d) { return x(new Date(d.label)) })
             .attr('width', x.bandwidth())
             .attr('height', function (d) { return y(d.y) })
             .attr('y', function (d) { return height - y(d.y) })
