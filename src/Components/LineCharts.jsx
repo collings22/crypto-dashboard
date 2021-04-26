@@ -3,98 +3,106 @@ import React, { useRef, useEffect } from 'react';
 
 export const SimpleLineChart = (props) => {
     const data = props.chartData
-
-    const margin = { top: 10, right: 10, bottom: 0, left: 30 }
+    const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
     const height = 105 - margin.top - margin.bottom
 
     const ref = useRef()
 
     useEffect(() => {
-        d3.select(ref.current).selectAll('svg').remove()
-
-        const svg = d3.select(ref.current)
-            .append('svg')
+        d3.select(ref.current)
             .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', '0 0 420 135')
+            .attr('viewBox', '-20 -15 410 130')
             .append('g')
             .attr('transform',
                 'translate(' + margin.left + ',' + margin.top + ')')
 
-        svg
-            .append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', width)
-            .attr('height', height)
-            .attr('fill', 'none')
-            .attr('stroke', 'transparent')
-            .attr('stroke-width', 4)
-
-        const groups = d3.map(data, function (d) {
-            return (d.label)
-        })
-
-        const x = d3.scaleBand()
-            .domain(groups)
-            .range([0, width])
-            .padding([0.02])
-
-        const xAxis = d3.axisBottom(x)
-            .tickFormat(function (d, i) {
-                var date = new Date(d)
-                return i === 0 || i === (data.length - 1) ? (date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear().toString().substr(2)) : null
-            })
-
-        svg.append('g')
-            .attr('transform', `translate(0, ${height})`)
-            .style('color', '#17a2b8')
-            .style('font-size', '50%')
-            .call(xAxis)
-            .selectAll('text')
-            .style('text-anchor', 'middle')
+    }, [margin.top, margin.left, height, width])
 
 
-        const y = d3.scaleLinear()
-            .domain([0, d3.max(data, function (d) { return +d.y })])
+    const drawChart = () => {
+        const svg = d3.select(ref.current);
+        let selection = svg.selectAll("rect").data(data);
+
+        let y = d3.scaleLinear()
+            .domain([0, Math.max(...data.map(o => o.y))*1.1])
             .range([height, 0])
 
-        svg.append('g')
+        let x = d3.scaleTime()
+            .domain(d3.extent(data, function (d) { return new Date(d.label) }))
+            .range([0, width])
+
+        selection.enter().append('g')
             .attr('class', 'grid')
             .style('color', '#17a2b8')
 
-        svg.append('g')
+        selection.enter().append('g')
+            .attr('id', 'yAxis')
             .style('font-size', '50%')
             .style('color', '#17a2b8')
-            .call(d3.axisLeft(y))
+            .call(y)
+
+        svg.select("#yAxis")
+            .attr("class", "axis axis--y")
+            .transition()
+            .call(d3.axisLeft(y));
 
 
-        // Add the line
-        svg.append('path')
-            .datum(data)
+        selection.enter().append('g')
+            .attr('id', 'xAxis')
+            .attr('transform', `translate(0, ${height})`)
+            .style('color', '#17a2b8')
+            .style('font-size', '50%')
+            .call(x)
+            .selectAll('text')
+            .style('text-anchor', 'middle')
+
+        svg.select("#xAxis")
+            .transition()
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        let durations = 600
+        svg.selectAll(".axis.axis--x").transition()
+            .duration(durations)
+            .call(x);
+
+        selection.selectAll(".axis.axis--y").transition()
+            .duration(durations)
+            .call(y);
+
+        var line = svg.selectAll(".lineTest")
+            .data([data], function (d) { return new Date(d.label) });
+
+            line = line
+            .enter()
+            .append("path")
+            .attr("class", "lineTest")
+            .merge(line);
+
+        var valueline = d3.line()
+            .x(function (d) { return x(new Date(d.label)); })
+            .y(function (d) { return y(d.y); });
+
+            line.transition()
+            .attr("d", valueline)
             .attr('stroke', '#17a2b8')
-            .attr('stroke-width', 2.5)
+            .attr('stroke-width', 1.5)
             .attr('fill', 'none')
-            .attr('d', d3.line()
-                .x(function (d) {
-                    return x(d.label)
-                })
-                .y(function (d) {
-                    return y(d.y)
-                })
-            )
 
-        // if (props.trendline) {
-        //   const lr = drawTrendline(data, ['y'])
-        //   svg.append('line')
-        //     .attr('x1', width)
-        //     .attr('y1', yAxis(lr[0].intercept + (lr[0].slope * lr[0].n)))
-        //     .attr('y2', yAxis(lr[0].intercept))
-        //     .style('stroke', 'grey')
-        //     .style('opacity', '0.6')
-        //     .style('stroke-width', '1px')
-        // }
-    }, [data, margin.left, margin.top, height, width])
+    }
 
-    return <div ref={ref} />
+
+    useEffect(() => {
+        drawChart()
+        // eslint-disable-next-line
+    }, [data])
+
+
+    return (
+        <div>
+            <svg ref={ref}></svg>
+        </div>
+    )
 }
