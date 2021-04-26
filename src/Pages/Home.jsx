@@ -44,7 +44,7 @@ const Home = () => {
   ])
 
   const changeData = () => {
-    setData(data.map(o => { return { ...o, y: (Math.random() * 100) } }))
+    setData(data.map(o => { return { label: new Date(+(new Date()) - Math.floor(Math.random()*10000000000)), y: (Math.random() * 100) } }))
   }
 
 
