@@ -11,42 +11,41 @@ import { useState } from 'react';
 const Home = () => {
   const [data, setData] = useState([{
     label: '2021-06-03',
-    y: 10
+    y: 5
   },
   {
     label: '2021-07-04',
-    y: 4
+    y: 10
   },
   {
     label: '2021-08-04',
-    y: 6
+    y: 10
   },
   {
     label: '2021-09-05',
-    y: 4
+    y: 10
   },
   {
     label: '2021-09-06',
-    y: 14
+    y: 10
   },
   {
     label: '2021-10-07',
-    y: 2
+    y: 10
   },
   {
     label: '2021-11-08',
-    y: 2
+    y: 10
   },
   {
     label: '2021-12-09',
-    y: 7
+    y: 5
   },
   ])
 
   const changeData = () => {
-    setData(data.map(o => { return { label: new Date(+(new Date()) - Math.floor(Math.random()*10000000000)), y: (Math.random() * 100) } }))
+    setData(data.map(o => { return { ...o, y: (Math.random() * 100) } }))
   }
-
 
   return (
     <Container fluid>
