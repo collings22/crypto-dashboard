@@ -24,7 +24,7 @@ export const SimpleBarChart = (props) => {
     const drawChart = () => {
         const svg = d3.select(ref.current);
 
-        let data = dataFromProps.map(o => { return {...o, y: Object.values(o).reduce((p,c) => p + (c > 0 ? c : 0), 0) } }) 
+        let data = dataFromProps.map(o => { return { ...o, y: Object.values(o).reduce((p, c) => p + (c > 0 ? c : 0), 0) } })
         let selection = svg.selectAll("rect").data(data);
 
         let y = d3.scaleLinear()
@@ -129,8 +129,6 @@ export const SimpleStackedBarChart = (props) => {
     }, [margin.top, margin.left, height, width])
 
     const drawChart = () => {
-        console.log(data)
-
         let stackedData = d3.stack().keys(Object.keys(data[0]).filter(f => !['label'].includes(f)))(data)
 
         const svg = d3.select(ref.current);
@@ -139,10 +137,6 @@ export const SimpleStackedBarChart = (props) => {
         let y = d3.scaleLinear()
             .domain([0, Math.max(...data.map(o => o.y1 + o.y2 + o.y3)) * 1.1])
             .range([height, 0])
-
-
-        console.log(data.map(o => o.y1 + o.y2 + o.y3))
-
 
         let x = d3.scaleBand()
             .domain(data.map(o => o.label))
@@ -154,10 +148,7 @@ export const SimpleStackedBarChart = (props) => {
             .tickFormat(function (d, i) {
                 var date = new Date(d)
                 return i === 0 || i === (data.length - 1) ? (date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear().toString().substr(2)) : null
-            }
-            )
-
-
+            })
 
         selection.enter().append('g')
             .attr('class', 'grid')
@@ -188,18 +179,12 @@ export const SimpleStackedBarChart = (props) => {
             .call(xAxis);
 
 
-
-        selection
-            .enter()
-            .transition().duration(3000)
-
-
-        svg.selectAll("rect").transition().duration(3000)
+        svg.selectAll("rect").transition().duration(2000)
             .attr("y", (d) => height + margin.bottom)
             .attr("height", 0).remove()
 
 
-        svg.selectAll("rect")
+        let rect = svg.selectAll("rect")
             .enter().append('g')
             .data(stackedData)
             .enter().append('g')
@@ -209,30 +194,31 @@ export const SimpleStackedBarChart = (props) => {
                 if (d.key === 'y3') return '#94d8e3'
                 return 'yellow'
             })
+
+        rect
             .selectAll('g')
             .enter().append('g')
-            .data(d => {
-                console.log(d)
-                return d
-            })
+            .data(d => d)
             .enter().append('rect')
+            .attr('x', function (d) {
+                return x(d.data.label)
+            })
+            .attr("y", (d) => height + margin.bottom)
+            .attr("height", 0)
+            .attr('width', x.bandwidth())
+
+        rect.selectAll('rect')
             .attr('x', function (d) {
                 return x(d.data.label)
             })
             .attr('y', function (d) {
                 return y(d[1])
-            })
+            }).transition().duration(1000)
             .attr('height', function (d) {
                 return y(d[0]) - y(d[1])
             })
             .attr('width', x.bandwidth())
 
-        selection
-            .exit()
-            .transition().duration(3000)
-            .attr("y", (d) => height + margin.bottom)
-            .attr("height", 0)
-            .remove()
     }
 
     useEffect(() => {
