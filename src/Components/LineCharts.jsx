@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import React, { useRef, useEffect } from 'react';
 
 export const SimpleLineChart = (props) => {
-    const data = props.chartData
+    const dataFromProps = props.chartData
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
     const height = 105 - margin.top - margin.bottom
@@ -21,6 +21,8 @@ export const SimpleLineChart = (props) => {
 
 
     const drawChart = () => {
+        let data = dataFromProps.map(o => { return {...o, y: Object.values(o).reduce((p,c) => p + (c > 0 ? c : 0), 0) } }) 
+
         const svg = d3.select(ref.current);
         let selection = svg.selectAll("rect").data(data);
 
@@ -97,7 +99,7 @@ export const SimpleLineChart = (props) => {
     useEffect(() => {
         drawChart()
         // eslint-disable-next-line
-    }, [data])
+    }, [dataFromProps])
 
 
     return (
