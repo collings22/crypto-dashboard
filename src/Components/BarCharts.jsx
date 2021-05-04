@@ -73,7 +73,7 @@ export const SimpleBarChart = (props) => {
             .call(xAxis);
 
         selection
-            .transition().duration(3000)
+            .transition().duration(1000)
             .attr('height', function (d) { return height - y(d.y) })
             .attr('y', function (d) { return y(d.y) })
 
@@ -88,7 +88,7 @@ export const SimpleBarChart = (props) => {
 
         selection
             .exit()
-            .transition().duration(300)
+            .transition().duration(1000)
             .attr("y", (d) => height)
             .attr("height", 0)
             .remove()
@@ -109,7 +109,6 @@ export const SimpleBarChart = (props) => {
 
 export const SimpleStackedBarChart = (props) => {
     const data = props.chartData
-    console.clear()
 
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
@@ -135,7 +134,7 @@ export const SimpleStackedBarChart = (props) => {
         let selection = svg.selectAll("rect").data(stackedData);
 
         let y = d3.scaleLinear()
-            .domain([0, Math.max(...data.map(o => o.y1 + o.y2 + o.y3)) * 1.1])
+            .domain([0, Math.max(...data.map(o => o.y1 + o.y2 + o.y3)) * 1.1]) //named properties can be variable, consider alternatives
             .range([height, 0])
 
         let x = d3.scaleBand()
