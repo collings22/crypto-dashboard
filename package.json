@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "d3": "^6.6.2",
+    "d3-collection": "^1.0.7",
     "d3-selection-multi": "^1.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
