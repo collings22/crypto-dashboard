@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import React, { useRef, useEffect } from 'react';
-
+import PlaceholderChart from './PlaceholderChart'
 
 
 export const SimpleBarChart = (props) => {
@@ -95,7 +95,8 @@ export const SimpleBarChart = (props) => {
     }
 
     useEffect(() => {
-        drawChart()
+        if (dataFromProps.length === 0) PlaceholderChart(ref)
+        else drawChart()
         // eslint-disable-next-line
     }, [dataFromProps])
 
@@ -108,7 +109,7 @@ export const SimpleBarChart = (props) => {
 }
 
 export const SimpleStackedBarChart = (props) => {
-    const data = props.chartData
+    const dataFromProps = props.chartData
 
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
@@ -128,17 +129,17 @@ export const SimpleStackedBarChart = (props) => {
     }, [margin.top, margin.left, height, width])
 
     const drawChart = () => {
-        let stackedData = d3.stack().keys(Object.keys(data[0]).filter(f => !['label'].includes(f)))(data)
+        let stackedData = d3.stack().keys(Object.keys(dataFromProps[0]).filter(f => !['label'].includes(f)))(dataFromProps)
 
         const svg = d3.select(ref.current);
         let selection = svg.selectAll("rect").data(stackedData);
 
         let y = d3.scaleLinear()
-            .domain([0, Math.max(...data.map(o => o.y1 + o.y2 + o.y3)) * 1.1]) //named properties can be variable, consider alternatives
+            .domain([0, Math.max(...dataFromProps.map(o => o.y1 + o.y2 + o.y3)) * 1.1]) //named properties can be variable, consider alternatives
             .range([height, 0])
 
         let x = d3.scaleBand()
-            .domain(data.map(o => o.label))
+            .domain(dataFromProps.map(o => o.label))
             .range([0, width])
             .padding([0.02])
 
@@ -146,7 +147,7 @@ export const SimpleStackedBarChart = (props) => {
         let xAxis = d3.axisBottom(x)
             .tickFormat(function (d, i) {
                 var date = new Date(d)
-                return i === 0 || i === (data.length - 1) ? (date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear().toString().substr(2)) : null
+                return i === 0 || i === (dataFromProps.length - 1) ? (date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear().toString().substr(2)) : null
             })
 
         selection.enter().append('g')
@@ -178,9 +179,10 @@ export const SimpleStackedBarChart = (props) => {
             .call(xAxis);
 
 
-        svg.selectAll("rect").transition().duration(2000)
+        svg.selectAll("rect").transition().duration(250)
             .attr("y", (d) => height + margin.bottom)
             .attr("height", 0).remove()
+
 
 
         let rect = svg.selectAll("rect")
@@ -209,10 +211,10 @@ export const SimpleStackedBarChart = (props) => {
         rect.selectAll('rect')
             .attr('x', function (d) {
                 return x(d.data.label)
-            })
+            }).transition().duration(1500)
             .attr('y', function (d) {
                 return y(d[1])
-            }).transition().duration(1000)
+            })
             .attr('height', function (d) {
                 return y(d[0]) - y(d[1])
             })
@@ -221,9 +223,10 @@ export const SimpleStackedBarChart = (props) => {
     }
 
     useEffect(() => {
-        drawChart()
+        if (dataFromProps.length === 0) PlaceholderChart(ref)
+        else drawChart()
         // eslint-disable-next-line
-    }, [data])
+    }, [dataFromProps])
 
 
     return (

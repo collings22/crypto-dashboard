@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { nest } from 'd3-collection'
 import React, { useRef, useEffect } from 'react';
+import PlaceholderChart from './PlaceholderChart'
 
 export const SimpleLineChart = (props) => {
     const dataFromProps = props.chartData
@@ -97,7 +98,8 @@ export const SimpleLineChart = (props) => {
 
 
     useEffect(() => {
-        drawChart()
+        if (dataFromProps.length === 0) PlaceholderChart(ref)
+        else drawChart()
         // eslint-disable-next-line
     }, [dataFromProps])
 
@@ -212,7 +214,8 @@ export const SimpleMultiLineChart = (props) => {
 
 
     useEffect(() => {
-        drawChart()
+        if (dataFromProps.length === 0) PlaceholderChart(ref)
+        else drawChart()
         // eslint-disable-next-line
     }, [dataFromProps])
 
