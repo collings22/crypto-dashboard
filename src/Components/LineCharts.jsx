@@ -26,6 +26,10 @@ export const SimpleLineChart = (props) => {
         let data = dataFromProps.map(o => { return { ...o, y: Object.values(o).reduce((p, c) => p + (c > 0 ? c : 0), 0) } })
 
         const svg = d3.select(ref.current);
+        svg.style('background-color', '').style('opacity', 1)
+        svg.selectAll('line.placeholder-line').remove()
+        svg.selectAll('rect.placeholder-bars').remove()
+
         let selection = svg.selectAll("rect").data(data);
 
         let y = d3.scaleLinear()
@@ -98,8 +102,10 @@ export const SimpleLineChart = (props) => {
 
 
     useEffect(() => {
-        if (dataFromProps.length === 0) PlaceholderChart(ref)
-        else drawChart()
+        if (dataFromProps.length === 0 || [...new Set(dataFromProps.map(a => a.type))].length > 1) PlaceholderChart(ref)
+        else {
+            drawChart()
+        }
         // eslint-disable-next-line
     }, [dataFromProps])
 
@@ -138,7 +144,11 @@ export const SimpleMultiLineChart = (props) => {
             .key(d => d.type)
             .entries(data);
 
-        const svg = d3.select(ref.current);
+        const svg = d3.select(ref.current)
+        svg.style('background-color', '').style('opacity', 1)
+        svg.selectAll('line.placeholder-line').remove()
+        svg.selectAll('rect.placeholder-bars').remove()
+
         let selection = svg.selectAll("rect").data(sumstat);
 
         let y = d3.scaleLinear()
@@ -204,9 +214,11 @@ export const SimpleMultiLineChart = (props) => {
             .x(d => x(new Date(d.label)))
             .y(d => y(d.y)).curve(d3.curveCardinal)(d.values)
 
+            var color = d3.scaleOrdinal(d3.schemeCategory10); 
+
         line.transition().duration(1000)
             .attr("d", d => valueline(d))
-            .attr('stroke', (d,i) => ['#17a2b8','#94d8e3','#d5ddde'][i])
+            .attr('stroke', (d,i) => color(i))
             .attr('stroke-width', 1.5)
             .attr('fill', 'none')
 
@@ -215,7 +227,9 @@ export const SimpleMultiLineChart = (props) => {
 
     useEffect(() => {
         if (dataFromProps.length === 0) PlaceholderChart(ref)
-        else drawChart()
+        else {
+            drawChart()
+        }
         // eslint-disable-next-line
     }, [dataFromProps])
 

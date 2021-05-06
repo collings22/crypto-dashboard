@@ -4,6 +4,7 @@ const PlaceholderChart = ref => {
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
     const height = 105 - margin.top - margin.bottom
+    
 
     d3.select(ref.current)
         .attr('preserveAspectRatio', 'xMinYMin meet')
@@ -14,6 +15,9 @@ const PlaceholderChart = ref => {
 
 
     const svg = d3.select(ref.current).style('background-color', 'lightgrey').style('opacity', 0.6);
+    svg.selectAll('path.lineTest').remove()
+    svg.selectAll('rect.bars').remove()
+
 
     let data = new Array(10).fill().map((e, i) => {
         return { label: 1 + i, y: (Math.random() * 100) }
@@ -73,6 +77,7 @@ const PlaceholderChart = ref => {
 
     selection
         .enter().append('rect')
+        .attr('class','placeholder-bars')
         .style('fill', 'grey')
         .attr('x', function (d) { return x(d.label) })
         .attr('width', x.bandwidth())
@@ -87,6 +92,7 @@ const PlaceholderChart = ref => {
         .remove()
 
     svg.append('line')
+    .attr('class','placeholder-line')
         .attr('x1', 0)
         .attr('y1', 0)
         .attr('x2', width)
@@ -95,6 +101,7 @@ const PlaceholderChart = ref => {
         .attr('opacity', 0.7)
 
     svg.append('line')
+    .attr('class','placeholder-line')
         .attr('x1', 0)
         .attr('y1', height)
         .attr('x2', width)

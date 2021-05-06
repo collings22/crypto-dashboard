@@ -23,6 +23,9 @@ export const SimpleBarChart = (props) => {
 
     const drawChart = () => {
         const svg = d3.select(ref.current);
+        svg.style('background-color', '').style('opacity', 1)
+        svg.selectAll('line.placeholder-line').remove()
+        svg.selectAll('rect.placeholder-bars').remove()
 
         let data = dataFromProps.map(o => { return { ...o, y: Object.values(o).reduce((p, c) => p + (c > 0 ? c : 0), 0) } })
         let selection = svg.selectAll("rect").data(data);
@@ -83,6 +86,7 @@ export const SimpleBarChart = (props) => {
             .style('fill', '#17a2b8')
             .attr('x', function (d) { return x(new Date(d.label)) })
             .attr('width', x.bandwidth())
+            .attr('class', 'bars')
             .attr('y', function (d) { return y(d.y) })
             .attr('height', function (d) { return height - y(d.y) })
 
@@ -95,8 +99,10 @@ export const SimpleBarChart = (props) => {
     }
 
     useEffect(() => {
-        if (dataFromProps.length === 0) PlaceholderChart(ref)
-        else drawChart()
+        if (dataFromProps.length === 0 || [...new Set(dataFromProps.map(a => a.type))].length > 1) PlaceholderChart(ref)
+        else {
+            drawChart()
+        }
         // eslint-disable-next-line
     }, [dataFromProps])
 
@@ -110,6 +116,7 @@ export const SimpleBarChart = (props) => {
 
 export const SimpleStackedBarChart = (props) => {
     const dataFromProps = props.chartData
+    
 
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
@@ -129,17 +136,23 @@ export const SimpleStackedBarChart = (props) => {
     }, [margin.top, margin.left, height, width])
 
     const drawChart = () => {
-        let stackedData = d3.stack().keys(Object.keys(dataFromProps[0]).filter(f => !['label'].includes(f)))(dataFromProps)
+        console.log(dataFromProps)
+        let stackedData = d3.stack().keys(Object.keys(dataFromProps[0]).filter(f => !['label', 'type'].includes(f)))(dataFromProps)
+        console.log(stackedData)
 
         const svg = d3.select(ref.current);
+        svg.style('background-color', '').style('opacity', 1)
+        svg.selectAll('line.placeholder-line').remove()
+        svg.selectAll('rect.placeholder-bars').remove()
+
         let selection = svg.selectAll("rect").data(stackedData);
 
         let y = d3.scaleLinear()
-            .domain([0, Math.max(...dataFromProps.map(o => o.y1 + o.y2 + o.y3)) * 1.1]) //named properties can be variable, consider alternatives
+            .domain([0, Math.max(...dataFromProps.map(o => Object.values(o).reduce((p, c) => p + (Number.isInteger(c) ? c : 0), 0))) * 1.1])
             .range([height, 0])
 
         let x = d3.scaleBand()
-            .domain(dataFromProps.map(o => o.label))
+            .domain(dataFromProps.map(o => new Date(o.label)))
             .range([0, width])
             .padding([0.02])
 
@@ -190,11 +203,12 @@ export const SimpleStackedBarChart = (props) => {
             .data(stackedData)
             .enter().append('g')
             .style('fill', (d, i) => {
-                if (d.key === 'y1') return '#17a2b8'
-                if (d.key === 'y2') return '#d5ddde'
-                if (d.key === 'y3') return '#94d8e3'
+                if (d.key === 'USD') return '#17a2b8'
+                if (d.key === 'GBP') return '#d5ddde'
+                if (d.key === 'BTC') return '#94d8e3'
                 return 'yellow'
-            })
+            })            .attr('class', 'bars')
+
 
         rect
             .selectAll('g')
@@ -202,15 +216,16 @@ export const SimpleStackedBarChart = (props) => {
             .data(d => d)
             .enter().append('rect')
             .attr('x', function (d) {
-                return x(d.data.label)
+                return x(new Date(d.data.label))
             })
             .attr("y", (d) => height + margin.bottom)
             .attr("height", 0)
             .attr('width', x.bandwidth())
+            .attr('class', 'bars')
 
         rect.selectAll('rect')
             .attr('x', function (d) {
-                return x(d.data.label)
+                return x(new Date(d.data.label))
             }).transition().duration(1500)
             .attr('y', function (d) {
                 return y(d[1])
@@ -218,13 +233,16 @@ export const SimpleStackedBarChart = (props) => {
             .attr('height', function (d) {
                 return y(d[0]) - y(d[1])
             })
-            .attr('width', x.bandwidth())
+            .attr('width', x.bandwidth())         .attr('class', 'bars')
+
 
     }
 
     useEffect(() => {
-        if (dataFromProps.length === 0) PlaceholderChart(ref)
-        else drawChart()
+        if (dataFromProps.length === 0 || [...new Set(dataFromProps.map(a => a.type))].length > 1) PlaceholderChart(ref)
+        else {
+            drawChart()
+        }
         // eslint-disable-next-line
     }, [dataFromProps])
 
