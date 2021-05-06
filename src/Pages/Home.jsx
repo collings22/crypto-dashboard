@@ -27,7 +27,7 @@ const Home = () => {
 
   return (
     <Container fluid>
-      <Button onClick={e => dispatch({ type: 'api/randomiseCryptoData', payload: data })}>Randomise Data</Button>
+      <Button style={{ border: 'white solid 2px', bottom: '25px', boxShadow: '5px 5px 10px 1px #888888', right: '15px', zIndex: 1, position: 'fixed' }} onClick={e => dispatch({ type: 'api/randomiseCryptoData', payload: data })}>Randomise Data</Button>
 
       <Card className='mb-3'>
         <Card.Body>
