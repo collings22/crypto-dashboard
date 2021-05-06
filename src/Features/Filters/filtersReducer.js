@@ -9,9 +9,9 @@ export const selectAllCryptos = (state) => {
 
     let selectedCryptos = state.filters.cryptos
 
-    let selectedInArrayFirst = data.filter(a => selectedCryptos.includes(a.id))
+    let selectedInArrayFirst = data.filter(a => selectedCryptos.includes(a.type))
 
     let mergedArrayWithSelectedAtStartOfArray = [...selectedInArrayFirst, ...data]
 
-    return mergedArrayWithSelectedAtStartOfArray.filter((v,i,a)=> a.findIndex(t=>(t.id === v.id))===i)
+    return mergedArrayWithSelectedAtStartOfArray.filter((v,i,a)=> a.findIndex(t=>(t.type === v.type))===i)
 }

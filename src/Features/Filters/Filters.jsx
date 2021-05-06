@@ -56,9 +56,9 @@ const Filters = () => {
 }
 
 const Buttons = (props) => {
-    return props.data.map((o) =>
+    return props.data.map((o,i) =>
     (
-        <Button style={{ margin: '4px' }} onClick={e => props.handleToggle(props.type, e)} value={o.id} variant={props.filtered.includes(o.id) ? "info" : "outline-info"} key={"_" + o.id}>{o.name}</Button>
+        <Button style={{ margin: '4px' }} onClick={e => props.handleToggle(props.type, e)} value={o.type} variant={props.filtered.includes(o.type) ? "info" : "outline-info"} key={"_" +i+ o.type}>{o.type}</Button>
     )
     );
 }
