@@ -42,12 +42,10 @@ export const SimpleLineChart = (props) => {
 
         selection.enter().append('g')
             .attr('class', 'grid')
-            .style('color', '#17a2b8')
 
         selection.enter().append('g')
             .attr('id', 'yAxis')
             .style('font-size', '50%')
-            .style('color', '#17a2b8')
             .call(y)
 
         svg.select("#yAxis")
@@ -59,7 +57,6 @@ export const SimpleLineChart = (props) => {
         selection.enter().append('g')
             .attr('id', 'xAxis')
             .attr('transform', `translate(0, ${height})`)
-            .style('color', '#17a2b8')
             .style('font-size', '50%')
             .call(x)
             .selectAll('text')
@@ -81,7 +78,7 @@ export const SimpleLineChart = (props) => {
             .call(y);
 
         var line = svg.selectAll(".lineTest")
-            .data([data], function (d) { return new Date(d.label) });
+            .data([data], function (d) { return new Date(d.label) })
 
         line = line
             .enter()
@@ -123,6 +120,7 @@ export const SimpleMultiLineChart = (props) => {
     const margin = { top: 10, right: 10, bottom: 0, left: 10 }
     const width = 400 - margin.top - margin.right
     const height = 105 - margin.top - margin.bottom
+    const filterSingleViewCharts = props.handleFilterSingleViewChartsCallback
 
     const ref = useRef()
 
@@ -161,12 +159,10 @@ export const SimpleMultiLineChart = (props) => {
 
         selection.enter().append('g')
             .attr('class', 'grid')
-            .style('color', '#17a2b8')
 
         selection.enter().append('g')
             .attr('id', 'yAxis')
             .style('font-size', '50%')
-            .style('color', '#17a2b8')
             .call(y)
 
         svg.select("#yAxis")
@@ -177,7 +173,6 @@ export const SimpleMultiLineChart = (props) => {
         selection.enter().append('g')
             .attr('id', 'xAxis')
             .attr('transform', `translate(0, ${height})`)
-            .style('color', '#17a2b8')
             .style('font-size', '50%')
             .call(x)
             .selectAll('text')
@@ -214,13 +209,20 @@ export const SimpleMultiLineChart = (props) => {
             .x(d => x(new Date(d.label)))
             .y(d => y(d.y)).curve(d3.curveCardinal)(d.values)
 
-            var color = d3.scaleOrdinal(d3.schemeCategory10); 
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
 
         line.transition().duration(1000)
-            .attr("d", d => valueline(d))
-            .attr('stroke', (d,i) => color(i))
+
+        line.attr("d", d => valueline(d))
+            .attr('id', function (d) { return d.key + "-line"; })
+            .attr('stroke', (d, i) => color(i))
             .attr('stroke-width', 1.5)
             .attr('fill', 'none')
+
+        line.on('mouseenter', d => {
+            d3.selectAll('#' + d.srcElement.__data__.key + '-line').style("stroke-width", '3px');
+            filterSingleViewCharts(d.srcElement.__data__.key)
+        })
 
     }
 
