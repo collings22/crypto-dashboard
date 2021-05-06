@@ -7,21 +7,13 @@ import Filters from '../Features/Filters'
 import { SimpleLineChart, SimpleMultiLineChart } from '../Components/LineCharts'
 import { SimpleBarChart, SimpleStackedBarChart } from '../Components/BarCharts'
 import { useSelector, useDispatch } from 'react-redux'
-import { dispatch } from 'd3-dispatch'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const handleReduxAction = (actionType, obj) => dispatch({ type: actionType, payload: obj.target.value })
 
   const data = useSelector((state) => state.api.data)
   const filteredCryptos = useSelector((state) => state.filters.cryptos)
   const comparableData = data.filter(f => filteredCryptos.includes(f.type))
-
-
-  const changeData = () => {
-    // setData(data.map(o => { return { ...o, y1: (Math.random() * 15), y2: (Math.random() * 15), y3: (Math.random() * 2000000) } }))
-    // setComparableData(comparableData.map(o => { return { ...o, y1: (Math.random() * 15), y2: (Math.random() * 15), y3: (Math.random() * 2000000) } }))
-  }
 
   return (
     <Container fluid>
