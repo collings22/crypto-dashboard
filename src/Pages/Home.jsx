@@ -7,6 +7,7 @@ import Filters from '../Features/Filters'
 import { SimpleLineChart, SimpleMultiLineChart } from '../Components/LineCharts'
 import { SimpleBarChart, SimpleStackedBarChart } from '../Components/BarCharts'
 import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -15,21 +16,33 @@ const Home = () => {
   const filteredCryptos = useSelector((state) => state.filters.cryptos)
   const comparableData = data.filter(f => filteredCryptos.includes(f.type))
 
+  const [singleChartFilter, setSingleChartFilter] = useState(filteredCryptos[0])
+
+  useEffect(() => {
+    if (!filteredCryptos.includes(singleChartFilter) && filteredCryptos.length > 0) setSingleChartFilter(filteredCryptos[filteredCryptos.length - 1])
+    else if (filteredCryptos.length === 0) setSingleChartFilter(null)
+  }, [filteredCryptos])
+
+  const handleFilterSingleChart = d => setSingleChartFilter(d)
+
   return (
     <Container fluid>
-      <Button onClick={e => dispatch({type: 'api/randomiseCryptoData', payload: data})}>Randomise Data</Button>
+      <Button onClick={e => dispatch({ type: 'api/randomiseCryptoData', payload: data })}>Randomise Data</Button>
 
       <Card className='mb-3'>
         <Card.Body>
           <Filters />
+          <br />
+          <h2>{singleChartFilter}</h2>
           <Row>
-            <Col><SimpleLineChart chartData={comparableData} /></Col>
-            <Col><SimpleStackedBarChart chartData={comparableData} /></Col>
-            <Col><SimpleBarChart chartData={comparableData} /></Col>
+            <Col><SimpleLineChart chartData={comparableData.filter(f => f.type === singleChartFilter)} /></Col>
+            <Col><SimpleStackedBarChart chartData={comparableData.filter(f => f.type === singleChartFilter)} /></Col>
+            <Col><SimpleBarChart chartData={comparableData.filter(f => f.type === singleChartFilter)} /></Col>
           </Row>
+          <hr />
           <Row>
-            <Col><SimpleMultiLineChart chartData={comparableData} /></Col>
-            <Col><SimpleMultiLineChart chartData={comparableData} /></Col>
+            <Col><SimpleMultiLineChart handleFilterSingleViewChartsCallback={handleFilterSingleChart} chartData={comparableData} /></Col>
+            <Col><SimpleMultiLineChart handleFilterSingleViewChartsCallback={handleFilterSingleChart} chartData={comparableData} /></Col>
           </Row>
         </Card.Body>
       </Card>
