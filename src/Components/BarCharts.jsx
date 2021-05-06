@@ -49,12 +49,10 @@ export const SimpleBarChart = (props) => {
 
         selection.enter().append('g')
             .attr('class', 'grid')
-            .style('color', '#17a2b8')
 
         selection.enter().append('g')
             .attr('id', 'yAxis')
             .style('font-size', '50%')
-            .style('color', '#17a2b8')
             .call(y)
 
         svg.select("#yAxis")
@@ -65,7 +63,6 @@ export const SimpleBarChart = (props) => {
         selection.enter().append('g')
             .attr('id', 'xAxis')
             .attr('transform', `translate(0, ${height})`)
-            .style('color', '#17a2b8')
             .style('font-size', '50%')
             .call(x)
             .selectAll('text')
@@ -162,12 +159,10 @@ export const SimpleStackedBarChart = (props) => {
 
         selection.enter().append('g')
             .attr('class', 'grid')
-            .style('color', '#17a2b8')
 
         selection.enter().append('g')
             .attr('id', 'yAxis')
             .style('font-size', '50%')
-            .style('color', '#17a2b8')
             .call(y)
 
         svg.select("#yAxis")
@@ -178,7 +173,6 @@ export const SimpleStackedBarChart = (props) => {
         selection.enter().append('g')
             .attr('id', 'xAxis')
             .attr('transform', `translate(0, ${height})`)
-            .style('color', '#17a2b8')
             .style('font-size', '50%')
             .call(x)
             .selectAll('text')
