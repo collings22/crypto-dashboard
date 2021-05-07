@@ -224,6 +224,37 @@ export const SimpleMultiLineChart = (props) => {
             filterSingleViewCharts(d.srcElement.__data__.key)
         })
 
+        svg.append('line')
+            .attr('class', 'horizontal-cross')
+            .attr('x1', 50)
+            .attr('y1', 0)
+            .attr('x2', 50)
+            .attr('y2', height)
+            .attr('stroke', null)
+            .attr('opacity', 0.7)
+
+        svg.append('line')
+            .attr('class', 'vertical-cross')
+            .attr('x1', 0)
+            .attr('y1', 10)
+            .attr('x2', width)
+            .attr('y2', 10)
+            .attr('stroke', null)
+            .attr('opacity', 0.7)
+
+        svg.on('mousemove', event => {
+            var Loc = d3.pointer(event);
+            if (Loc[1] < 0 || Loc[1] > height) d3.selectAll('.vertical-cross').attr('stroke', null)
+            else if (Loc[0] < 0 || Loc[0] > width) d3.selectAll('.horizontal-cross').attr('stroke', null)
+            else {
+                d3.selectAll('.horizontal-cross').attr('x1', Loc[0]).attr('x2', Loc[0]).attr('stroke', 'lightgrey').style('z-index', 1000000)
+                d3.selectAll('.vertical-cross').attr('y1', Loc[1]).attr('y2', Loc[1]).attr('stroke', 'lightgrey').style('z-index', 1000000)
+            }
+        }).on('mouseleave', () => {
+            d3.selectAll('.vertical-cross').attr('stroke', null)
+            d3.selectAll('.horizontal-cross').attr('stroke', null)
+        })
+
     }
 
 
