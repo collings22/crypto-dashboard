@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
 import NavBar from './Components/NavBar'
 import About from './Pages/About'
+import Profile from './Pages/Profile'
 import Home from './Pages/Home'
 import { fetchCoinData } from './HOCSlices/apiThunk'
 import { useSelector, useDispatch } from 'react-redux'
 
-function App() {
+function App () {
   const dispatch = useDispatch()
 
   const loadingStatus = useSelector((state) => state.api.status)
@@ -24,21 +25,17 @@ function App() {
     return (
       <>
         <NavBar />
-        <Switch>
-          <Route exact path={'/About'}>
-            <About />
-          </Route>
-          <Route exact path={'/Home'}>
-            <Home />
-          </Route>
-          <Redirect to='/Home' />
-        </Switch>
+        <div className='body'>
+          <Route path='/About' component={About} />
+          <Route path='/Profile' component={Profile} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/callback' component={Profile} />
+        </div>
       </>
     )
-  }
-  else if (loadingStatus === 'loading') {
+  } else if (loadingStatus === 'loading') {
     return (
-      <Spinner style={{ margin: '50%' }} animation="grow" variant="info" />
+      <Spinner style={{ margin: '50%' }} animation='grow' variant='info' />
     )
   } else if (loadingStatus === 'failed') {
     console.log(error)
@@ -46,23 +43,17 @@ function App() {
       <>
         <NavBar />
         <Alert key='fetchFailed' variant='danger'>
-    API Call Failed. The app will use mock data. See console log for error details.
-  </Alert>
-        <Switch>
-          <Route exact path={'/About'}>
-            <About />
-          </Route>
-          <Route exact path={'/Home'}>
-            <Home />
-          </Route>
-          <Redirect to='/Home' />
-        </Switch>
+          API Call Failed. The app will use mock data. See console log for error details.
+        </Alert>
+        <div className='body'>
+          <Route path='/About' component={About} />
+          <Route path='/Profile' component={Profile} />
+          <Route exact path='/' component={Home} />
+        </div>
       </>
     )
   }
   return <></>
-
 }
-
 
 export default App
