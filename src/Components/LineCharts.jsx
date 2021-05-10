@@ -191,8 +191,9 @@ export const SimpleMultiLineChart = (props) => {
         svg.selectAll(".axis.axis--y").transition()
             .duration(1000)
             .call(y);
-
-        svg.selectAll('.lineTest').remove()
+            
+            // svg.selectAll('.line-datapoints').remove()
+            svg.selectAll('.lineTest').remove()
 
         var line = svg.selectAll(".lineTest")
             .data([data], function (d) { return new Date(d.label) });
@@ -219,9 +220,20 @@ export const SimpleMultiLineChart = (props) => {
             .attr('stroke-width', 1.5)
             .attr('fill', 'none')
 
+
+    	// 	selection.data(data)
+    	// .enter().append("circle")
+        // .attr('class', 'line-datapoints')
+        // .attr("r", 3)
+        // .attr("cx", function(d) { return x(new Date(d.label)); })
+        // .attr("cy", function(d) { return y(d.y); })
+
+        
+
+
         line.on('mouseenter', d => {
             d3.selectAll('#' + d.srcElement.__data__.key + '-line').style("stroke-width", '3px');
-            filterSingleViewCharts(d.srcElement.__data__.key)
+            filterSingleViewCharts(d.srcElement.__data__.key)                
         })
 
         svg.append('line')
@@ -256,6 +268,25 @@ export const SimpleMultiLineChart = (props) => {
             d3.selectAll('.vertical-cross').attr('stroke', null)
             d3.selectAll('.horizontal-cross').attr('stroke', null)
         })
+        // .on('mousemove', event => {
+        //     let xLoc = event.x
+        //     let yLoc = event.y
+        //     let mouse = d3.pointer(event)
+        //     updateTooltipContent(xLoc, yLoc, mouse)
+        // })
+
+
+        // function updateTooltipContent(xLoc, yLoc,mouse) {
+        //     let sortingObj = []
+        //     sumstat.map(d => {
+        //       var xDate = x.invert(mouse[0])
+        //       var bisect = d3.bisector(function (d) { return d.label; }).left
+        //       var idx = bisect(d.values, xDate)
+        //       sortingObj.push({key: d.values[idx].type, y: d.values[idx].y})
+        //     })
+
+        //     console.log(sortingObj)
+        // }
 
     }
 
