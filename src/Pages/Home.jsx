@@ -7,7 +7,7 @@ import Filters from '../Features/Filters'
 import { SimpleLineChart, SimpleMultiLineChart } from '../Components/LineCharts'
 import { SimpleBarChart, SimpleStackedBarChart } from '../Components/BarCharts'
 import { useSelector, useDispatch } from 'react-redux'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -21,14 +21,13 @@ const Home = () => {
   useEffect(() => {
     if (!filteredCryptos.includes(singleChartFilter) && filteredCryptos.length > 0) setSingleChartFilter(filteredCryptos[filteredCryptos.length - 1])
     else if (filteredCryptos.length === 0) setSingleChartFilter(null)
-  }, [filteredCryptos])
+  }, [filteredCryptos, singleChartFilter])
 
   const handleFilterSingleChart = d => setSingleChartFilter(d)
 
   return (
     <Container fluid>
       <Button style={{ border: 'white solid 2px', bottom: '25px', boxShadow: '5px 5px 10px 1px #888888', right: '15px', zIndex: 1, position: 'fixed' }} onClick={e => dispatch({ type: 'api/randomiseCryptoData', payload: data })}>Randomise Data</Button>
-
       <Card className='mb-3'>
         <Card.Body>
           <Filters />
