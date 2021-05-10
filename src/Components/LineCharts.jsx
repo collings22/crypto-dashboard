@@ -232,6 +232,7 @@ export const SimpleMultiLineChart = (props) => {
             .attr('y2', height)
             .attr('stroke', null)
             .attr('opacity', 0.7)
+            .attr('pointer-events', 'none')
 
         svg.append('line')
             .attr('class', 'vertical-cross')
@@ -241,6 +242,7 @@ export const SimpleMultiLineChart = (props) => {
             .attr('y2', 10)
             .attr('stroke', null)
             .attr('opacity', 0.7)
+            .attr('pointer-events', 'none')
 
         svg.on('mousemove', event => {
             var Loc = d3.pointer(event);
