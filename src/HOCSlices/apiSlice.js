@@ -214,21 +214,18 @@ export const dataFetchSlice = createSlice({
         USD: 0,
         GBP: 10,
         BTC: 0
-      },
-  
-  
-  
-  
-  
-  
-    ], status: 'idle', error: null,
+      }
+
+    ],
+    status: 'idle',
+    error: null
   },
   reducers: {
     randomiseCryptoData: (state, action) => {
-      let currentData = action.payload
+      const currentData = action.payload
       const randomisedData = currentData.map(o => { return { ...o, USD: Math.round(Math.random() * 15), GBP: Math.round(Math.random() * 15), BTC: Math.round(Math.random() * 15) } })
       state.data = randomisedData
-    },
+    }
   },
   extraReducers: {
     [fetchCoinData.rejected]: (state, action) => {

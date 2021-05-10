@@ -7,15 +7,16 @@ export const filtersSlice = createSlice({
     timePeriod: []
   },
   reducers: {
-    setTimePeriod: (state, action) => state.timePeriod = action.payload,
+    setTimePeriod: (state, action) => {
+      state.timePeriod = action.payload
+    },
     clearCryptoFilter: (state, action) => {
       state.cryptos = []
     },
     toggleCryptoFilter: (state, action) => {
       if (state.cryptos.includes(action.payload)) {
         state.cryptos = state.cryptos.filter(el => el !== action.payload)
-      }
-      else {
+      } else {
         state.cryptos.push(action.payload)
       }
     },
@@ -24,8 +25,6 @@ export const filtersSlice = createSlice({
     }
   }
 })
-
-
 
 export const selectTimePeriod = state => state.filters.timePeriod
 export const selectFilteredCryptos = state => state.filters.cryptos

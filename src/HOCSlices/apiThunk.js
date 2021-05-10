@@ -4,9 +4,9 @@ import axios from 'axios'
 export const fetchCoinData = createAsyncThunk('api/fetchCoinData', async () => {
   return await axios(`http://example.com?apikey=${process.env.REACT_APP_API_KEY}`)
     .then(res => {
-        console.log(res.data)
-        console.log(Object.keys(res.data).map(i => res.data[i]))
-        return Object.keys(res.data).map(i => res.data[i])
+      console.log(res.data)
+      console.log(Object.keys(res.data).map(i => res.data[i]))
+      return Object.keys(res.data).map(i => res.data[i])
     })
     .catch(err => Promise.reject(err))
 },
@@ -19,6 +19,3 @@ export const fetchCoinData = createAsyncThunk('api/fetchCoinData', async () => {
     }
   }
 })
-
-
-
