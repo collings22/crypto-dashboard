@@ -1,6 +1,8 @@
 # Project Template
 
-Inspired by Uncle Bob's clean architecture I decided on creating this project to a component based architecture. As I do not believe a domain based architecture lends itself to an efficent test friendly structure.
+Inspired by Uncle Bob's clean architecture I decided on creating this project to a component based architecture.
+
+This frontend application at its core uses: React, Redux and D3.js.
 
 Happy to recieve comments and feedback!
 
