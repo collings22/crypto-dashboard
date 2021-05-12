@@ -7,8 +7,10 @@ const Auth0ProviderWithHistory = ({ children }) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
   const redirectUri = process.env.REACT_APP_AUTH0_CALLBACK_URL
+  const audience = process.env.REACT_APP_AUTH0_AUDIENCE
+
   const responseType = 'token id_token'
-  const scope = 'openid profile email'
+  const scope = 'read:message read:current_user update:current_user_metadata openid profile email'
 
   const history = useHistory()
 
@@ -23,6 +25,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
       redirectUri={redirectUri}
       responseType={responseType}
       scope={scope}
+      audience={audience}
       onRedirectCallback={onRedirectCallback}
     >
       {children}
