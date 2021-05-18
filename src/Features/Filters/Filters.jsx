@@ -5,7 +5,7 @@ import { selectAllCryptos } from './filtersReducer'
 import Card from 'react-bootstrap/Card'
 import Badge from 'react-bootstrap/Badge'
 import Accordion from 'react-bootstrap/Accordion'
-import { selectFilteredCryptos } from '../../HOCSlices/filterSlice'
+import { selectFilteredCryptos } from '../../Redux/filterSlice'
 import { PERIODS } from '../../Constants/constants'
 
 const Filters = () => {

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import dataFetchReducer from './HOCSlices/apiSlice'
-import filtersReducer from './HOCSlices/filterSlice'
+import dataFetchReducer from './Redux/apiSlice'
+import filtersReducer from './Redux/filterSlice'
 
 export default configureStore({
   reducer: {

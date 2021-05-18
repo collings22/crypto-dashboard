@@ -6,7 +6,7 @@ import NavBar from './Components/NavBar'
 import About from './Pages/About'
 import Profile from './Pages/Profile'
 import Home from './Pages/Home'
-import { fetchCoinData } from './HOCSlices/apiThunk'
+import { fetchCoinData } from './Redux/apiThunk'
 import { useSelector, useDispatch } from 'react-redux'
 
 function App () {
