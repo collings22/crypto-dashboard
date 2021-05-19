@@ -37,9 +37,7 @@ const NavBar = () => {
             <Nav.Link>
               <Link
                 className='text-link'
-                to={
-                  document.location.pathname.includes('About') ? '' : '/About'
-                }
+                to='/About'
               >
                 About
               </Link>
@@ -49,13 +47,19 @@ const NavBar = () => {
             <Nav.Link>
               <Link
                 className='text-link'
-                to={
-                  document.location.pathname.includes('Profile')
-                    ? ''
-                    : '/Profile'
-                }
+                to='/Profile'
               >
                 Profile
+              </Link>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item as='li'>
+            <Nav.Link>
+              <Link
+                className='text-link'
+                to='/Users'
+              >
+                Users
               </Link>
             </Nav.Link>
           </Nav.Item>

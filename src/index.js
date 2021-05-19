@@ -12,11 +12,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Auth0ProviderWithHistory>
-        <Provider store={store}>
+      <Provider store={store}>
+        <Auth0ProviderWithHistory>
           <Route component={App} />
-        </Provider>
-      </Auth0ProviderWithHistory>
+        </Auth0ProviderWithHistory>
+      </Provider>
 
     </Router>
   </React.StrictMode>,
